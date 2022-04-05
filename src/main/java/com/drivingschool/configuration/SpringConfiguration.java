@@ -28,4 +28,8 @@ public class SpringConfiguration {
             }
         };
     }
+
+    public String getAppUrl() {
+        return appUrl;
+    }
 }
