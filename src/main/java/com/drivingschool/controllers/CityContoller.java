@@ -1,6 +1,5 @@
 package com.drivingschool.controllers;
 
-import com.drivingschool.configuration.SpringConfiguration;
 import com.drivingschool.dto.CityDto;
 import com.drivingschool.entities.City;
 import com.drivingschool.repository.student.CityRepository;
@@ -20,15 +19,13 @@ public class CityContoller {
     private CityService cityService;
     private CityRepository cityRepository;
     @Autowired
-    SpringConfiguration springConfiguration;
-    @Autowired
     public CityContoller(CityService cityService, CityRepository cityRepository) {
         this.cityService = cityService;
         this.cityRepository = cityRepository;
     }
 
     @GetMapping("/all")
-    public String getAll(){
-      return springConfiguration.getAppUrl();
+    public ResponseEntity<List<CityDto>> getAll(){
+       return new ResponseEntity<>(cityService.readAllDto(), HttpStatus.OK);
     }
 }

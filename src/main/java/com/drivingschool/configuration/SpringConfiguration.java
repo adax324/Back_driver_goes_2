@@ -11,8 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SpringConfiguration {
-    @Autowired
-    private AppUrl appUrl;
+
 
     @Bean
     public ModelMapper modelMapper() {
@@ -26,12 +25,9 @@ public class SpringConfiguration {
                 registry.addMapping("/**")
                         .allowedMethods("GET","PUT","POST","DELETE")
                         .allowedHeaders("*")
-                        .allowedOrigins(appUrl.getUrl());
+                        .allowedOrigins(AppUrl.getUrl());
             }
         };
     }
 
-    public String getAppUrl() {
-        return appUrl.getUrl();
-    }
 }
