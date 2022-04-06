@@ -1,6 +1,7 @@
 package com.drivingschool.configuration;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SpringConfiguration {
-    @Value("app-url")
-    private String appUrl;
+    @Autowired
+    private AppUrl appUrl;
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
@@ -24,12 +26,12 @@ public class SpringConfiguration {
                 registry.addMapping("/**")
                         .allowedMethods("GET","PUT","POST","DELETE")
                         .allowedHeaders("*")
-                        .allowedOrigins(appUrl);
+                        .allowedOrigins(appUrl.getUrl());
             }
         };
     }
 
     public String getAppUrl() {
-        return appUrl;
+        return appUrl.getUrl();
     }
 }
