@@ -18,6 +18,7 @@ import java.util.List;
 public class CityContoller {
     private CityService cityService;
     private CityRepository cityRepository;
+
     @Autowired
     public CityContoller(CityService cityService, CityRepository cityRepository) {
         this.cityService = cityService;
@@ -25,7 +26,13 @@ public class CityContoller {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CityDto>> getAll(){
-       return new ResponseEntity<>(cityService.readAllDto(), HttpStatus.OK);
+    public ResponseEntity<List<CityDto>> getAll() {
+        return new ResponseEntity<>(cityService.readAllDto(), HttpStatus.OK);
     }
+//    @Autowired
+//    AppUrl appUrl;
+//    @GetMapping("/abc")
+//    public String test() {
+//        return appUrl.getUrl();
+//    }
 }

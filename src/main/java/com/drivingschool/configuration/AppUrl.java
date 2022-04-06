@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppUrl {
     @Value("${app.url}")
-    private static String url;
+    private String url;
 
-    public static String getUrl() {
+    public String getUrl() {
         return url;
     }
 
