@@ -8,15 +8,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentDto {
+public class StudentDTO {
+    private Long id;
     private String uuid;
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
     private String email;
-    private String phoneNumber;
+    private PhoneNumberDTO phoneNumber;
     private Double remainingHours;
     private boolean admittedExam;
-    private DepartmentDto department;
+    private DepartmentDTO department;
     //private Instructor instructor;
 }

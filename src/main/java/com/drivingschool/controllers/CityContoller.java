@@ -1,8 +1,6 @@
 package com.drivingschool.controllers;
 
-import com.drivingschool.dto.CityDto;
-import com.drivingschool.entities.City;
-import com.drivingschool.repository.student.CityRepository;
+import com.drivingschool.dto.CityDTO;
 import com.drivingschool.services.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,25 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController()
-@RequestMapping("/cities")
+@RequestMapping("/city")
 public class CityContoller {
-    private CityService cityService;
-    private CityRepository cityRepository;
 
+    private final CityService cityService;
     @Autowired
-    public CityContoller(CityService cityService, CityRepository cityRepository) {
+    public CityContoller(CityService cityService) {
         this.cityService = cityService;
-        this.cityRepository = cityRepository;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<CityDto>> getAll() {
-        return new ResponseEntity<>(cityService.readAllDto(), HttpStatus.OK);
+    @GetMapping("/list")
+    public ResponseEntity<List<CityDTO>> list() {
+        return new ResponseEntity<>(cityService.list(), HttpStatus.OK);
     }
-//    @Autowired
-//    AppUrl appUrl;
-//    @GetMapping("/abc")
-//    public String test() {
-//        return appUrl.getUrl();
-//    }
 }

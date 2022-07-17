@@ -15,7 +15,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "code", unique = true)
+    @Column(unique = true)
     private String uuid;
     @Column(name = "first_name")
     private String firstName;
@@ -24,8 +24,8 @@ public class Student {
     @Column(name = "birth_date")
     private LocalDate birthDate;
     private String email;
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @OneToOne(cascade = CascadeType.ALL)
+    private PhoneNumber phoneNumber;
     @Column(name = "remaining_hours")
     private Double remainingHours;
     @Column(name = "admitted_exam")
