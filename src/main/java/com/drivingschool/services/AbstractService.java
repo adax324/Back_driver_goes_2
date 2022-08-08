@@ -3,25 +3,21 @@ package com.drivingschool.services;
 
 import com.drivingschool.configuration.ApplicationContextProvider;
 import jakarta.persistence.EntityManager;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
-public abstract class AbstractService<T, TDTO, ID> {
+public abstract class AbstractService<T, TDTO, ID extends Number> {
     private EntityManager entityManager;
     private Session session;
     private ModelMapper modelMapper;
@@ -44,27 +40,20 @@ public abstract class AbstractService<T, TDTO, ID> {
     }
 
     public TDTO get(Long id) {
-        List<T> item = session
-                .createCriteria(entityClass)
-                .add(Restrictions.eq("id", id))
-                .list();
-        if (item.size() == 1) {
-            return map(item.get(0));
-        } else {
+        Optional<T> optional = abstractRepo.findById((ID) id);
+        if (optional.isPresent())
+            return map(optional.get());
+        else
             return null;
-        }
     }
 
     public TDTO get(String uuid) {
-        List<T> item = session
-                .createCriteria(entityClass)
-                .add(Restrictions.eq("uuid", uuid))
-                .list();
-        if (item.size() == 1) {
-            return map(item.get(0));
-        } else {
+        String query = String.format("FROM %s", entityClass.getSimpleName());
+        List<T> resultList = entityManager.createQuery(query + " WHERE uuid = :uuid").setParameter("uuid", uuid).getResultList();
+        if (resultList.size() == 1)
+            return map(resultList.get(0));
+        else
             return null;
-        }
     }
 
     public TDTO save(Object o) {
@@ -83,19 +72,11 @@ public abstract class AbstractService<T, TDTO, ID> {
     }
 
     public List<TDTO> list() {
-        return map(session.createCriteria(entityClass).list());
+        return map(abstractRepo.findAll());
     }
 
 
-    public List<TDTO> listByCriteria(Criterion... criterion) {
-        Criteria criteria = session.createCriteria(entityClass);
-        for (Criterion item : criterion) {
-            criteria.add(item);
-        }
-        return map(criteria.list());
-    }
-
-    private List<TDTO> map(List<T> entities) {
+    protected List<TDTO> map(List<T> entities) {
         List<TDTO> DTOS = new ArrayList<>();
         for (T entity : entities) {
             DTOS.add(modelMapper.map(entity, dtoClass));
@@ -103,7 +84,7 @@ public abstract class AbstractService<T, TDTO, ID> {
         return DTOS;
     }
 
-    private TDTO map(T entity) {
+    protected TDTO map(T entity) {
         return modelMapper.map(entity, dtoClass);
     }
 }
