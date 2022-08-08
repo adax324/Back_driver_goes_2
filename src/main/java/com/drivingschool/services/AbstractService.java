@@ -28,15 +28,17 @@ public abstract class AbstractService<T, TDTO, ID extends Number> {
     private JpaRepository<T, ID> abstractRepo;
 
     public AbstractService() {
-        entityClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        dtoClass = (Class<TDTO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        idClass = (Class<ID>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-        applicationContext = ApplicationContextProvider.getApplicationContext();
-        this.modelMapper = applicationContext.getBean(ModelMapper.class);
-        this.entityManager = applicationContext.getBean(EntityManager.class);
-        this.session = entityManager.unwrap(Session.class);
-        ResolvableType type = ResolvableType.forClassWithGenerics(JpaRepository.class, entityClass, idClass);
-        this.abstractRepo = (JpaRepository<T, ID>) applicationContext.getBeanProvider(type).getObject();
+        this.entityClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.dtoClass = (Class<TDTO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        this.idClass = (Class<ID>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+        this.applicationContext = ApplicationContextProvider.getApplicationContext();
+        if (this.applicationContext != null) {
+            this.modelMapper = applicationContext.getBean(ModelMapper.class);
+            this.entityManager = applicationContext.getBean(EntityManager.class);
+            this.session = entityManager.unwrap(Session.class);
+            ResolvableType type = ResolvableType.forClassWithGenerics(JpaRepository.class, entityClass, idClass);
+            this.abstractRepo = (JpaRepository<T, ID>) applicationContext.getBeanProvider(type).getObject();
+        }
     }
 
     public TDTO get(Long id) {
