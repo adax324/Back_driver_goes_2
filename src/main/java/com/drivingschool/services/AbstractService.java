@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
+@DependsOn(value = {"applicationContextProvider"})
 public abstract class AbstractService<T, TDTO, ID extends Number> {
     private EntityManager entityManager;
     private Session session;
@@ -32,13 +33,11 @@ public abstract class AbstractService<T, TDTO, ID extends Number> {
         this.dtoClass = (Class<TDTO>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         this.idClass = (Class<ID>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
         this.applicationContext = ApplicationContextProvider.getApplicationContext();
-        if (this.applicationContext != null) {
-            this.modelMapper = applicationContext.getBean(ModelMapper.class);
-            this.entityManager = applicationContext.getBean(EntityManager.class);
-            this.session = entityManager.unwrap(Session.class);
-            ResolvableType type = ResolvableType.forClassWithGenerics(JpaRepository.class, entityClass, idClass);
-            this.abstractRepo = (JpaRepository<T, ID>) applicationContext.getBeanProvider(type).getObject();
-        }
+        this.modelMapper = applicationContext.getBean(ModelMapper.class);
+        this.entityManager = applicationContext.getBean(EntityManager.class);
+        this.session = entityManager.unwrap(Session.class);
+        ResolvableType type = ResolvableType.forClassWithGenerics(JpaRepository.class, entityClass, idClass);
+        this.abstractRepo = (JpaRepository<T, ID>) applicationContext.getBeanProvider(type).getObject();
     }
 
     public TDTO get(Long id) {
