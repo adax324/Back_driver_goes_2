@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@DependsOn(value = {"applicationContextProvider"})
 public abstract class AbstractService<T, TDTO, ID extends Number> {
     private EntityManager entityManager;
     private Session session;
