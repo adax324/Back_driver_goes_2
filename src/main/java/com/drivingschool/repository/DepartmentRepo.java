@@ -1,7 +1,6 @@
 package com.drivingschool.repository;
 
-import com.drivingschool.entities.City;
-import com.drivingschool.entities.Department;
+import com.drivingschool.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

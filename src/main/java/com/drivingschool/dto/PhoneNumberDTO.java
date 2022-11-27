@@ -1,8 +1,6 @@
 package com.drivingschool.dto;
 
-import com.drivingschool.entities.Student;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
