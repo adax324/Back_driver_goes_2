@@ -1,2 +1,7 @@
-package com.drivingschool.entity;public enum ERole {
+package com.drivingschool.entity;
+
+public enum ERole {
+    ROLE_USER,
+    ROLE_MODERATOR,
+    ROLE_ADMIN
 }
