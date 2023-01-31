@@ -1,4 +1,4 @@
-package com.drivingschool.utils;
+package com.drivingschool.utility;
 
 import com.drivingschool.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
@@ -9,8 +9,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
