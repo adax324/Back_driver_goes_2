@@ -22,11 +22,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/auth")
 public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;

@@ -3,7 +3,7 @@ package com.drivingschool.controller;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @RestController

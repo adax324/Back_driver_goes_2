@@ -1,15 +1,13 @@
 package com.drivingschool.repository;
 
-import com.drivingschool.entity.AbstractEntity;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -17,15 +15,11 @@ import java.util.List;
 
 @Repository
 @Getter
-public abstract class AbstractRepo<T extends AbstractEntity<K>, K extends Serializable> {
+@Transactional
+public abstract class AbstractRepo<T, K extends Serializable> implements AbstractRepoInterface<T, K> {
     private final Class<T> entityClass;
     @PersistenceContext
     private EntityManager entityManager;
-
-    protected CriteriaBuilder cb;
-    protected CriteriaQuery<T> cq;
-    protected Root<T> root;
-
 
     public AbstractRepo() {
         entityClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -44,9 +38,10 @@ public abstract class AbstractRepo<T extends AbstractEntity<K>, K extends Serial
     }
 
     public List<T> list() {
-        refreshCr();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(entityClass);
+        Root<T> root = cq.from(entityClass);
         cq.select(root);
-
         return entityManager.createQuery(cq).getResultList();
     }
 
@@ -55,29 +50,25 @@ public abstract class AbstractRepo<T extends AbstractEntity<K>, K extends Serial
     }
 
     public T get(String uuid) {
-        refreshCr();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(entityClass);
+        Root<T> root = cq.from(entityClass);
         cq.where(cb.equal(root.get("uuid"), uuid));
         return entityManager.createQuery(cq).getSingleResult();
-    }
-
-    public List<T> listByCriteria() {
-        refreshCr();
-        return entityManager.createQuery(cq).getResultList();
     }
 
     public void delete(K id) {
         entityManager.remove(id);
     }
-
-    public CriteriaBuilder getCriteriaBuilder() {
-        return entityManager.getCriteriaBuilder();
+    public void delete(String uuid) {
+        entityManager.createQuery("FROM " + entityClass.getSimpleName() + " WHERE uuid = :uuid")
+                .setParameter("uuid", uuid)
+                .getResultStream()
+                .findFirst()
+                .ifPresent(entityManager::remove);
     }
 
-    private void refreshCr() {
-        cb = entityManager.getCriteriaBuilder();
-        cq = cb.createQuery(entityClass);
-        root = cq.from(entityClass);
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
-
-
 }

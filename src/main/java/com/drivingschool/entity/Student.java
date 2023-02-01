@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 @Entity
 @Table(name = "students")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Student extends AbstractEntity<Long> {
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

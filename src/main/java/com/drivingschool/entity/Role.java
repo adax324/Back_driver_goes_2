@@ -3,13 +3,13 @@ package com.drivingschool.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
 @Getter
 @Setter
-public class Role extends AbstractEntity<Long> {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

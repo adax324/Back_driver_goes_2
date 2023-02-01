@@ -3,33 +3,28 @@ package com.drivingschool.service;
 
 import com.drivingschool.configuration.ApplicationContextProvider;
 import com.drivingschool.dto.AbstractDTO;
-import com.drivingschool.entity.AbstractEntity;
 import com.drivingschool.repository.AbstractRepo;
 import com.drivingschool.utility.CustomMapper;
-import org.hibernate.Session;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import static com.drivingschool.utility.CustomMapper.*;
 
-
-public abstract class AbstractService<T extends AbstractEntity<K>, TDTO extends AbstractDTO<K>, K extends Serializable> {
+@Service
+public abstract class AbstractService<T, TDTO, K extends Serializable> implements AbstractServiceInterface<T, TDTO, K> {
     private final EntityManager entityManager;
     private final Class<T> entityClass;
     private final Class<TDTO> dtoClass;
@@ -51,14 +46,14 @@ public abstract class AbstractService<T extends AbstractEntity<K>, TDTO extends 
     }
 
     public TDTO get(K id) {
-        return CustomMapper.map(abstractRepo.get(id), dtoClass);
+        return map(abstractRepo.get(id), dtoClass);
     }
 
     public TDTO get(String uuid) {
         return map(abstractRepo.get(uuid), dtoClass);
     }
 
-    public TDTO save(Object o) {
+    public TDTO save(TDTO o) {
         try {
             Field uuid = o.getClass().getDeclaredField("uuid");
             uuid.setAccessible(true);
@@ -77,12 +72,12 @@ public abstract class AbstractService<T extends AbstractEntity<K>, TDTO extends 
         return map(abstractRepo.list(), dtoClass);
     }
 
+    public void delete(K id) {
+        abstractRepo.delete(id);
+    }
+
     public void delete(String uuid) {
-        entityManager.createQuery("FROM " + entityClass.getSimpleName() + " WHERE uuid = :uuid")
-                .setParameter("uuid", uuid)
-                .getResultStream()
-                .findFirst()
-                .ifPresent(entityManager::remove);
+        abstractRepo.delete(uuid);
     }
 
 }

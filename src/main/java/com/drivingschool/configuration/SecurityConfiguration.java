@@ -62,9 +62,7 @@ public class SecurityConfiguration {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/test/**").permitAll()
-                .requestMatchers(h2ConsolePath + "/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**", "/api/test/**", h2ConsolePath + "/**").permitAll()
                 .anyRequest().authenticated();
 
         http.headers().frameOptions().sameOrigin();

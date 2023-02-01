@@ -4,14 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "phone_number")
 @NoArgsConstructor
 @Getter
 @Setter
-public class PhoneNumber extends AbstractEntity<Long> {
+public class PhoneNumber {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
