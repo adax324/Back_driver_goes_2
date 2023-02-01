@@ -2,6 +2,7 @@ package com.drivingschool.controller;
 
 import com.drivingschool.dto.CityDTO;
 import com.drivingschool.service.CityService;
+import com.drivingschool.service.CityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,12 @@ import java.util.List;
 @RestController()
 @RequestMapping("/city")
 public class CityContoller {
-
-    private final CityService cityService;
     @Autowired
-    public CityContoller(CityService cityService) {
-        this.cityService = cityService;
-    }
+    private CityService cityService;
+
 
     @GetMapping("/list")
-    public ResponseEntity<List<CityDTO>> list(HttpServletRequest request, @RequestHeader HttpHeaders headers) {
+    public ResponseEntity<List<CityDTO>> list() {
         return new ResponseEntity<>(cityService.list(), HttpStatus.OK);
     }
 }

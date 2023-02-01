@@ -1,4 +1,4 @@
-package com.drivingschool.utils;
+package com.drivingschool.utility;
 
 import com.drivingschool.service.UserDetailsImpl;
 import io.jsonwebtoken.*;

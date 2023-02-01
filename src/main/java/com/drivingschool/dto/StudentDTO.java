@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentDTO {
+public class StudentDTO extends AbstractDTO<Long> {
     private Long id;
     private String uuid;
     private String firstName;

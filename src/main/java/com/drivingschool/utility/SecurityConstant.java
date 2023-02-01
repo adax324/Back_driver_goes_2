@@ -1,4 +1,4 @@
-package com.drivingschool.utils;
+package com.drivingschool.utility;
 
 public class SecurityConstant {
     public static final long EXPIRATION_TIME = 423_000_000; // 24h

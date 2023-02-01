@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PhoneNumberDTO {
+public class PhoneNumberDTO extends AbstractDTO<Long> {
     private Long id;
     private StudentDTO student;
     String area, exchange, subscriber;

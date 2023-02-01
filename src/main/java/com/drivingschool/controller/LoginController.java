@@ -10,7 +10,7 @@ import com.drivingschool.payload.response.UserInfoResponse;
 import com.drivingschool.repository.RoleRepo;
 import com.drivingschool.repository.UserRepo;
 import com.drivingschool.service.UserDetailsImpl;
-import com.drivingschool.utils.JwtUtils;
+import com.drivingschool.utility.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -19,16 +19,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/auth")
 public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
