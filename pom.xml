@@ -14,7 +14,7 @@
     <name>DrivingSchoolRestApi</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>18</java.version>
         <spring.version>2.7.5</spring.version>
     </properties>
     <dependencies>
