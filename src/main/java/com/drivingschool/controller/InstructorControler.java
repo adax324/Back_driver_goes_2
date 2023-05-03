@@ -1,7 +1,6 @@
 package com.drivingschool.controller;
 
 import com.drivingschool.dto.InstructorDTO;
-import com.drivingschool.dto.StudentDTO;
 import com.drivingschool.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,12 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/instructor")
 public class InstructorControler {
-    private InstructorService instructorService;
-    @Autowired
 
-    public InstructorControler(InstructorService instructorService) {
-        this.instructorService = instructorService;
-    }
+    @Autowired
+    private InstructorService instructorService;
+
     @GetMapping("/{uuid}")
     public InstructorDTO getInstructor(@PathVariable String uuid){ return instructorService.get(uuid);}
     @GetMapping("/all")
@@ -32,7 +29,7 @@ public class InstructorControler {
     public ResponseEntity<InstructorDTO> save(@RequestBody InstructorDTO instructorDTO) {
         return new ResponseEntity<>(instructorService.save(instructorDTO), HttpStatus.CREATED);
     }
-    @CrossOrigin
+
     @DeleteMapping("/delete")
     public void delete (@RequestParam String uuid) {instructorService.delete(uuid);}
 }
