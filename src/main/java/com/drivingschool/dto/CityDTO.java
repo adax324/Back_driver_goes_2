@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties(value = {"departments"} , allowSetters = true)
-public class CityDTO extends AbstractDTO<Long> {
+public class CityDTO {
     private Long id;
     private String name;
     List<DepartmentDTO> departments;

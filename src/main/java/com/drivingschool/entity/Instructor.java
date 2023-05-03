@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "instructors")
@@ -28,4 +30,25 @@ public class Instructor {
     private PhoneNumber phoneNumber;
     @Column(name = "available_hours")
     private Double availableHours;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "instructors_students",
+            joinColumns = @JoinColumn(name = "instructor_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<Student> students;
+
+    public void addStudent(Student student) {
+        if (students == null)
+            students = new ArrayList<>();
+        students.add(student);
+        student.addInstructor(this);
+    }
+
+    public void removeStudent(Student student) {
+        if (students != null) {
+            students.remove(student);
+            student.removeInstructor(this);
+        }
+    }
 }

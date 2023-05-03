@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "students")
 @NoArgsConstructor
@@ -34,7 +37,23 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
-    //private Instructor instructor;
+
+    @ManyToMany
+    private List<Instructor> instructors;
+
+    public void addInstructor(Instructor instructor) {
+        if (instructors == null)
+            instructors = new ArrayList<>();
+        instructors.add(instructor);
+        instructor.addStudent(this);
+    }
+
+    public void removeInstructor(Instructor instructor) {
+        if (instructors != null) {
+            instructors.remove(instructor);
+            instructor.removeStudent(this);
+        }
+    }
 
 
 }

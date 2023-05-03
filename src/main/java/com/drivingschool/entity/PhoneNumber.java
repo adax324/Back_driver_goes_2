@@ -17,5 +17,7 @@ public class PhoneNumber {
     private Long id;
     @OneToOne(mappedBy = "phoneNumber")
     private Student student;
+    @OneToOne(mappedBy = "phoneNumber")
+    private Instructor instructor;
     private String area, exchange, subscriber;
 }
